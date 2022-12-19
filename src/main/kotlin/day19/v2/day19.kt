@@ -80,6 +80,39 @@ fun solve(config: Config): Int {
             continue
         }
 
+        if (ore >= config.geodeRobot.ore && obsidian >= config.geodeRobot.obsidian) {
+            stack.add(
+                State(
+                    StoneState(
+                        ore + oreR - config.geodeRobot.ore,
+                        clay + clayR,
+                        obsidian + obsidianR - config.geodeRobot.obsidian,
+                        geode + geodeR
+                    ),
+                    RobotState(oreR, clayR, obsidianR, geodeR + 1),
+                    time + 1
+                )
+            )
+            continue
+        }
+
+        if (ore >= config.obsidianRobot.ore && clay >= config.obsidianRobot.clay) {
+            stack.add(
+                State(
+                    StoneState(
+                        ore + oreR - config.obsidianRobot.ore,
+                        clay + clayR - config.obsidianRobot.clay,
+                        obsidian + obsidianR,
+                        geode + geodeR
+                    ),
+                    RobotState(oreR, clayR, obsidianR + 1, geodeR),
+                    time + 1
+                )
+            )
+            continue
+        }
+
+
         // do nothing
         stack.add(State(StoneState(ore + oreR, clay + clayR, obsidian + obsidianR, geode + geodeR), robots, time + 1))
 
@@ -102,36 +135,6 @@ fun solve(config: Config): Int {
                 )
             )
         }
-
-        if (ore >= config.obsidianRobot.ore && clay >= config.obsidianRobot.clay) {
-            stack.add(
-                State(
-                    StoneState(
-                        ore + oreR - config.obsidianRobot.ore,
-                        clay + clayR - config.obsidianRobot.clay,
-                        obsidian + obsidianR,
-                        geode + geodeR
-                    ),
-                    RobotState(oreR, clayR, obsidianR + 1, geodeR),
-                    time + 1
-                )
-            )
-        }
-
-        if (ore >= config.geodeRobot.ore && obsidian >= config.geodeRobot.obsidian) {
-            stack.add(
-                State(
-                    StoneState(
-                        ore + oreR - config.geodeRobot.ore,
-                        clay + clayR,
-                        obsidian + obsidianR - config.geodeRobot.obsidian,
-                        geode + geodeR
-                    ),
-                    RobotState(oreR, clayR, obsidianR, geodeR + 1),
-                    time + 1
-                )
-            )
-        }
     }
 
     return best
@@ -142,17 +145,35 @@ fun main() {
     var line = readlnOrNull()
     var id = 1
     var res = 0
+    val configs = mutableListOf<Config>()
+    println("part 1")
     while (line != null) {
         val config = parseConfig(line)
         println(config)
+        configs.add(config)
         val t = measureTimeMillis {
             val x = solve(config)
             res += id++ * x
             println("$config -> $x")
         }
-        println("Took ${t / 1000} seconds.")
+        println("Took ${t / 1000.0} seconds.")
         line = readlnOrNull()
     }
 
+
+    println(res)
+
+
+    println("part 2")
+    TIME_LIMIT = 32
+    res = 1
+    for (config in configs.take(3)) {
+        val t = measureTimeMillis {
+            val x = solve(config)
+            println("$config -> $x")
+            res *= x
+        }
+        println("Took ${t / 1000.0} seconds.")
+    }
     println(res)
 }
