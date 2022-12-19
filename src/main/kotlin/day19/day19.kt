@@ -42,7 +42,7 @@ fun paseConfig(line: String): Config {
 }
 
 fun main() {
-    setIn("input.txt")
+    setIn("test.txt")
 
     val configs = mutableListOf<Config>()
     var line = readlnOrNull()
@@ -62,11 +62,25 @@ fun main() {
     }
 
     println("res: $cumul")
+
+    println("Part 2")
+    timeLimit = 32
+    cumul = 1
+    for (config in configs.take(3)) {
+        println(config)
+        val bestScore = compute(config)
+        println(bestScore)
+        cumul *= bestScore
+    }
+
+    println("res: $cumul")
 }
 
 fun compute(config: Config): Int {
     return dfs(1, 0, 0, 0, 0, 1, 0, 0, 0, config)
 }
+
+var timeLimit = 24
 
 fun dfs(
     time: Int,
@@ -80,7 +94,7 @@ fun dfs(
     geodeRobots: Int,
     config: Config
 ): Int {
-    if (time > 24) return geode
+    if (time > timeLimit) return geode
 
     if (ore >= config.geodeRobot.ore && obsidian >= config.geodeRobot.obsidian) {
         return dfs(
