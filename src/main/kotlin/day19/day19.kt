@@ -42,7 +42,7 @@ fun paseConfig(line: String): Config {
 }
 
 fun main() {
-    setIn("test.txt")
+    setIn("input.txt")
 
     val configs = mutableListOf<Config>()
     var line = readlnOrNull()
