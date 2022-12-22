@@ -1,8 +1,8 @@
-package day23
+package day22
 
-import day23.Direction.*
-import day23.Direction.Left
-import day23.Direction.Right
+import day22.Direction.*
+import day22.Direction.Left
+import day22.Direction.Right
 
 fun verifySquareMoves(squareMoves: Map<Pair<Int, Direction>, Pair<Int, Direction>>) {
     for ((from, to) in squareMoves) {

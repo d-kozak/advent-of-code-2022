@@ -1,4 +1,4 @@
-package day23
+package day22
 
 import java.io.FileInputStream
 import kotlin.math.max
