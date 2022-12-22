@@ -25,6 +25,12 @@ enum class Direction(val dRow: Int, val dCol: Int) {
         Up -> Right
     }
 
+    fun flip() = when (this) {
+        Right -> Left
+        Left -> Right
+        Up -> Down
+        Down -> Up
+    }
 
     override fun toString(): String = when (this) {
         Right -> ">"
@@ -111,7 +117,7 @@ data class GameState(
     val COLS: Int,
     val grid: MutableList<MutableList<Char>>,
     val instructions: List<Instruction>,
-    val next: GameState.() -> Pair<Int, Int>
+    val next: GameState.() -> Triple<Int, Int, Direction>
 ) {
     fun doSolve(): Int {
         while (grid[r][c] != '.')
@@ -123,10 +129,11 @@ data class GameState(
                 Right -> d = d.right()
                 is Move -> {
                     for (iter in 0 until inst.x) {
-                        val (nr, nc) = next()
+                        val (nr, nc, nd) = next()
                         if (grid[nr][nc] == '#') break
                         r = nr
                         c = nc
+                        d = nd
                     }
                 }
             }
@@ -136,7 +143,7 @@ data class GameState(
     }
 }
 
-fun solve(next: GameState.() -> Pair<Int, Int>): Int {
+fun solve(next: GameState.() -> Triple<Int, Int, Direction>): Int {
     val (grid, C, instructions) = parseGrid()
     val R = grid.size
     val state = GameState(0, 0, Direction.Right, R, C, grid, instructions, next)
@@ -157,7 +164,7 @@ fun main() {
             nc = (nc + d.dCol) % COLS
             if (nc < 0) nc += COLS
         } while (grid[nr][nc] == ' ')
-        nr to nc
+        Triple(nr, nc, d)
     }
 
     println("part 1")
