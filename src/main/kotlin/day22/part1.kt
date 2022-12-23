@@ -3,7 +3,7 @@ package day22
 import java.io.FileInputStream
 import kotlin.math.max
 
-fun setIn(fileName: String) = System.setIn(FileInputStream("src/main/kotlin/day23/${fileName}"))
+fun setIn(fileName: String) = System.setIn(FileInputStream("src/main/kotlin/day22/${fileName}"))
 
 enum class Direction(val dRow: Int, val dCol: Int) {
     Right(0, +1),
