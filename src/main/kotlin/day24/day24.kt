@@ -146,6 +146,8 @@ fun main() {
 
     val seen = mutableSetOf<State>()
 
+    var part1 = true
+
     val queue = ArrayDeque<State>()
     queue.add(State(startR, startC, 0, 0))
 
@@ -162,10 +164,17 @@ fun main() {
             continue@l
 
         if (pr == endR && pc == endC && iter % 2 == 0) {
-            val part = if (iter == 0) 1 else 2
-            println("part $part")
+            var part = -1
+            if (part1 && iter == 0) {
+                part = 1
+                part1 = false
+            } else if (iter == 2)
+                part = 2
+            if (part != -1) {
+                println("part $part")
 //            dumpState(state)
-            println("shortest len: $len")
+                println("shortest len: $len")
+            }
             if (part == 1) {
                 nextIter = 1
             } else if (part == 2) {
@@ -174,7 +183,6 @@ fun main() {
         }
 
         if (pr == startR && pc == startC && iter == 1) {
-            println("==mid===")
             nextIter = 2
         }
 
